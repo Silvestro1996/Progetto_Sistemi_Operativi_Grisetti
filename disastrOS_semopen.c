@@ -7,5 +7,12 @@
 #include "disastrOS_semdescriptor.h"
 
 void internal_semOpen(){
-  // do stuff :)
+  int semid = running->syscall_args[0];
+  
+  if (semid <0){
+	  disastrOS_debug("The semaphore id is invalid");
+	  running->syscall_retvalue = DSOS_SEMNEG;
+	  return;
+  }
+  
 }
