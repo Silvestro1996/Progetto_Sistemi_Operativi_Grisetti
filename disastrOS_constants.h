@@ -30,6 +30,8 @@
 #define DSOS_ERESOURCEINUSE -13
 #define DSOS_SEMNEGERROR -14
 #define DSOS_SEMALLOCERROR -15
+#define DSOS_ERRCREATEFD -16
+#define DSOS_NOSEMERROR -17
 
 // syscall numbers
 #define DSOS_MAX_SYSCALLS 32
