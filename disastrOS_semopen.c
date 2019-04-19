@@ -34,7 +34,40 @@ void internal_semOpen(){
 	  /* semaphore in the list*/
 	  List_insert(&semaphores_list, semaphore_list.last, (ListItem*) mySem);
   }
-
+  
+  ListHead opened_ones = running->sem_descriptors;
+  
+  SemDescriptor* op_des = Search_sem_id(&opened_ones, semid);
+  
+  if (op_des){
+	  running->syscall_retvalue = opened->fd;
+	  return;
+  }
+  
+  else{
+	  (running->last_sem_fd)++;
+	  
+	  int fd = running->last_sem_fd;
+	  SemDescriptor* semdesc = SemDescriptor_alloc(fd,mySem,running);
+	  if(!semdesc){
+		  running->syscall_retvalue = DSOS_ERRCREATEFD;
+		  return;
+	  }
+	  
+	  disastrOS_debug("Descriptor created\n");
+	  
+	  SemDescriptorPtr* semdesc_ptr = SemDescriptorPtr_alloc(semdesc);
+	  if(!semdesc_ptr){
+		  running->syscall_retvalue = DSOS_ERRCREATEFDPTR; // no creation of sem dscriptor pointer
+		  return;
+	  }
+	  
+	  semdesc->ptr = semdesc_ptr; //put into the struct
+	  List_insert(&running->sem_descriptors, running->sem_descriptors.last, (ListItem*)semdesc);
+	  List_insert(&mySem->descriptors, mySem->descriptors.last, (ListItem*)semdesc_ptr); /* fill the lists */
+	  
+	  running->syscall_retvalue = fd;
 		  
+	  }
 		     
 }
