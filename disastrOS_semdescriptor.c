@@ -105,3 +105,15 @@ void SemDescriptorPtrList_print(ListHead* l){
   }
   printf("]");
 }
+/*implementing function defined in semdescriptor.h*/
+SemDescriptor* Search_sem_id(ListHead* descriptor_list, int sem_id){
+	ListItem* aux = descriptor_list->first;
+	SemDescriptor* semdes;
+	while(aux){
+		if ( sem_id == aux->semaphore->id) semdes = aux;
+		aux = aux->next;
+	}
+	return semdes;
+}
+
+
