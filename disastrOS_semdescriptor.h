@@ -25,6 +25,8 @@ SemDescriptor* SemDescriptor_alloc(int fd, Semaphore* res, PCB* pcb);
 int SemDescriptor_free(SemDescriptor* d);
 SemDescriptor*  SemDescriptorList_byFd(ListHead* l, int fd);
 void SemDescriptorList_print(ListHead* l);
+//check if the id is in the list
+SemDescriptor* Search_sem_id(ListHead* descriptor_list, int sem_id);
 
 SemDescriptorPtr* SemDescriptorPtr_alloc(SemDescriptor* descriptor);
 int SemDescriptorPtr_free(SemDescriptorPtr* d);
