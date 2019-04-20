@@ -15,7 +15,35 @@ void internal_semClose(){
 		running->syscall_retvalue = DSOS_NOSEMERROR;
 		return;
 	}
-	/*removing descriptor*/
+	/*removing descriptor from Process Control Block*/
 	sem_des = List_detach(&(running->sem_descriptors), (ListItem*) sem_fd);
+	
+	/* <assert> displays an error message on stderr if the expression is FALSE*/
+	assert(des); 
+	
+	Semaphore* Sem = sem_des-> semaphore;
+	
+	/* removing descriptors from the semaphore*/
+	SemDescriptorPtr* sem_des_ptr = List_detach(&(Sem->descriptors, (ListItem*)(sem_des->ptr));
+	assert(sem_des_ptr);
+	
+	/*free*/
+	SemDescriptorPtr_free(sem_des_ptr);
+	assert(sem_des_ptr);
+	SemDescriptor_free(sem_des);
+	assert(sem_des);
+	
+	int dim = sem->descriptors.size;
+	
+	/*check if the semaphore is not used*/
+	if (dim == 0){
+		disastrOS_debug("semaphore with id %d will be deleted\n", Sem->id);
+		Sem = List_detach(&(semaphore_list), (ListItem*) Sem);
+		assert(Sem);
+		Semaphore_free(sem);
+	}
+	
+	/*success code*/
+	running->suscall_retvalue = 0;
 	
 }
