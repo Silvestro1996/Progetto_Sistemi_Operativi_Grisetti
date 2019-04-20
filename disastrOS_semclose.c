@@ -44,6 +44,6 @@ void internal_semClose(){
 	}
 	
 	/*success code*/
-	running->suscall_retvalue = 0;
+	running->syscall_retvalue = 0;
 	
 }
