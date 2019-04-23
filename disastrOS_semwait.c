@@ -53,12 +53,3 @@ void internal_semWait(){
   old_one->syscall_retvalue = 0;
   return;
 }
-	  
-  
-	  
-	 
-	  
-  
- 
-  
-}
