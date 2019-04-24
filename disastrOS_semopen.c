@@ -16,7 +16,8 @@ void internal_semOpen(){
   }
 
   /*checking if a semaphore with the given id already exists*/
-  Semaphore* mySem = SemaphoreList_byId(&semaphores_list, semid); 
+  ListHead semaphoress = semaphore_list;
+  Semaphore* mySem = SemaphoreList_byId(&semaphoress, semid); 
   
   if (!mySem) {
 	  disastrOS_debug("Allocation of semaphore with id: %d\n", semid);
@@ -32,7 +33,7 @@ void internal_semOpen(){
 	  else{ disastrOS_debug("Successful allocation\n");}
 	  
 	  /* semaphore in the list*/
-	  List_insert(&semaphores_list, semaphore_list.last, (ListItem*) mySem);
+	  List_insert(&semaphore_list, semaphore_list.last, (ListItem*) mySem);
   }
   
   ListHead opened_ones = running->sem_descriptors;
@@ -40,7 +41,7 @@ void internal_semOpen(){
   SemDescriptor* op_des = Search_sem_id(&opened_ones, semid);
   
   if (op_des){
-	  running->syscall_retvalue = opened->fd;
+	  running->syscall_retvalue = op_des->fd;
 	  return;
   }
   
