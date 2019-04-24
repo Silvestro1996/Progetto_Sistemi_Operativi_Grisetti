@@ -16,7 +16,7 @@ void internal_semClose(){
 		return;
 	}
 	/*removing descriptor from Process Control Block*/
-	sem_des = List_detach(&(running->sem_descriptors), (ListItem*) sem_fd);
+	sem_des = (SemDescriptor*) List_detach(&(running->sem_descriptors), 					 (ListItem*) sem_des);
 	
 	/* <assert> displays an error message on stderr if the expression is FALSE*/
 	assert(sem_des); 
@@ -24,7 +24,7 @@ void internal_semClose(){
 	Semaphore* Sem = sem_des-> semaphore;
 	
 	/* removing descriptors from the semaphore*/
-	SemDescriptorPtr* sem_des_ptr = List_detach(&(Sem->descriptors), (ListItem*)(sem_des->ptr));
+	SemDescriptorPtr* sem_des_ptr = (SemDescriptorPtr*) List_detach(&(Sem->descriptors), (ListItem*)(sem_des->ptr));
 	assert(sem_des_ptr);
 	
 	/*free*/
@@ -38,7 +38,7 @@ void internal_semClose(){
 	/*check if the semaphore is not used*/
 	if (dim == 0){
 		disastrOS_debug("semaphore with id %d will be deleted\n", Sem->id);
-		Sem = List_detach(&(semaphores_list), (ListItem*) Sem);
+		Sem = (Semaphore*) List_detach(&(semaphores_list), (ListItem*) Sem);
 		assert(Sem);
 		Semaphore_free(Sem);
 	}

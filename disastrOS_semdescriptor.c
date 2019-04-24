@@ -111,7 +111,7 @@ SemDescriptor* Search_sem_id(ListHead* descriptor_list, int sem_id){
 	SemDescriptor* semdes;
 	while(aux){
 		SemDescriptor* des= (SemDescriptor*)aux;
-		if ( sem_id == des->semaphore->id) semdes = aux;
+		if ( sem_id == des->semaphore->id) semdes = des;
 		aux = aux->next;
 	}
 	return semdes;
