@@ -38,7 +38,7 @@ void internal_semClose(){
 	/*check if the semaphore is not used*/
 	if (dim == 0){
 		disastrOS_debug("semaphore with id %d will be deleted\n", Sem->id);
-		Sem = List_detach(&(semaphore_list), (ListItem*) Sem);
+		Sem = List_detach(&(semaphores_list), (ListItem*) Sem);
 		assert(Sem);
 		Semaphore_free(Sem);
 	}

@@ -16,7 +16,7 @@ void internal_semOpen(){
   }
 
   /*checking if a semaphore with the given id already exists*/
-  ListHead semaphoress = semaphore_list;
+  ListHead semaphoress = semaphores_list;
   Semaphore* mySem = SemaphoreList_byId(&semaphoress, semid); 
   
   if (!mySem) {
@@ -33,7 +33,7 @@ void internal_semOpen(){
 	  else{ disastrOS_debug("Successful allocation\n");}
 	  
 	  /* semaphore in the list*/
-	  List_insert(&semaphore_list, semaphore_list.last, (ListItem*) mySem);
+	  List_insert(&semaphores_list, semaphores_list.last, (ListItem*) mySem);
   }
   
   ListHead opened_ones = running->sem_descriptors;
