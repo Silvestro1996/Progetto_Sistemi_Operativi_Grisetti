@@ -32,6 +32,7 @@
 #define DSOS_SEMALLOCERROR -15
 #define DSOS_ERRCREATEFD -16
 #define DSOS_NOSEMERROR -17
+#define DSOS_ERRCREATEFDPTR -18
 
 // syscall numbers
 #define DSOS_MAX_SYSCALLS 32
