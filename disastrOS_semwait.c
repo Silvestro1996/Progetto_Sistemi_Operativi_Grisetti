@@ -37,14 +37,14 @@ void internal_semWait(){
 	  
 	  SemDescriptorPtr* des_ptr = SemDescriptorPtr_alloc(des);
 	  /*descrptor in waiting queue*/
-	  List_insert(&(sem->waiting_descriptors, 
+	  List_insert(&(sem->waiting_descriptors), 
 					sem->waiting_descriptors.last, 
 					(ListItem*) des_ptr);
 	  /*process in waiting queue*/		
-	  List_insert(&waiting_list, waiting_list.last, (ListItem*) des->pcb)
+	  List_insert(&waiting_list, waiting_list.last, (ListItem*) des->pcb);
 		
       /*next process*/
-      PCB* next_one = (PCB*) list_detach(&(ready_list), ready_list.first);
+      PCB* next_one = (PCB*) List_detach(&(ready_list), ready_list.first);
       running = next_one;
       disastrOS_debug("process:%d is now running\n",next_one->pid); 
 		
