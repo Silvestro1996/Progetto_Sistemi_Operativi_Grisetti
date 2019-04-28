@@ -259,6 +259,24 @@ void disastrOS_start(void (*f)(void*), void* f_args, char* logfile){
   setcontext(&running->cpu_state);
 }
 
+
+/* handlers for sem syscall*/
+int disastrOS_semOpen(int id, int count){
+    return disastrOS_syscall(DSOS_CALL_SEMOPEN, id, count);
+}
+
+int disastrOS_semClose(int des){
+    return disastrOS_syscall(DSOS_CALL_SEMCLOSE, des);
+}
+
+int disastrOS_semWait(int des){
+    return disastrOS_syscall(DSOS_CALL_SEMWAIT, des);
+}
+
+int disastrOS_semPost(int des){
+    return disastrOS_syscall(DSOS_CALL_SEMPOST, des);
+}
+
 int disastrOS_fork(){
   return disastrOS_syscall(DSOS_CALL_FORK);
 }
