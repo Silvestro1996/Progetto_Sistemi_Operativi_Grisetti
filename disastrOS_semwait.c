@@ -8,48 +8,43 @@
 
 /*decrementa valore semaforo. Se < 0, entra nella coda di attesa e ritorna un codice errore*/
 void internal_semWait(){
-  int fd = running->syscall_args[0];
-  /*keeping track of the running process for later*/
-  PCB* old_one = running;
-  
-  /*taking sem from running process pcb*/
-  SemDescriptor* des = SemDescriptorList_byFd(&(running->sem_descriptors), fd);
-  
-  
-  if (!des){
-		disastrOS_debug("There's no semaphore with the given fd\n");
+	int fd = running->syscall_args[0];
+
+	/*taking sem descriptor from running process pcb*/
+	SemDescriptor* des = SemDescriptorList_byFd(&running->sem_descriptors, fd);
+;
+	if(!des)
+	{
 		running->syscall_retvalue = DSOS_NOSEMERROR;
 		return;
-  }
-  /* decrementing value of the open semaphore with the given descriptor*/
-  Semaphore* sem = des->semaphore;
-   if(!sem){
-    running->syscall_retvalue = DSOS_NOSEMERROR;
-  }
-  sem->count--;
-  disastrOS_debug("semaphore with id %d ha been decreased...count: %d\n", sem->id, sem->count); 
-  
-  /*if count <0 right into waiting queue*/
-  
-  
-  if (sem->count <0){
-	  running->status = Waiting;
-	  
-	  SemDescriptorPtr* des_ptr = SemDescriptorPtr_alloc(des);
-	  /*descrptor in waiting queue*/
-	  List_insert(&(sem->waiting_descriptors), 
-					sem->waiting_descriptors.last, 
-					(ListItem*) des_ptr);
-	  /*process in waiting queue*/		
-	  List_insert(&waiting_list, waiting_list.last, (ListItem*) des->pcb);
-		
-      /*next process*/
-      PCB* next_one = (PCB*) List_detach(&(ready_list), ready_list.first);
-      running = next_one;
-      disastrOS_debug("process:%d is now running\n",next_one->pid); 
-		
-	  }
-	  
-  old_one->syscall_retvalue = 0;
-  return;
+	}
+
+	 /* decrementing value of the open semaphore with the given descriptor*/
+	Semaphore* sem = des->semaphore;
+	
+	sem->count--;
+	printf("\nSemaphore #%d has been decreased to %d by process %d\n\n", sem->id, sem->count, running->pid);
+
+
+	if(sem->count < 0)
+	{ 
+
+		/*Moving the descriptor pointer from the ready list of descriptors to the waiting one*/
+		List_detach(&sem->descriptors, (ListItem*) des->ptr);
+		List_insert(&sem->waiting_descriptors, sem->waiting_descriptors.last, (ListItem*) des->ptr);
+
+		/*Change the process status and insert it in the list of waiting processes*/
+		running->status = Waiting;
+		List_insert(&waiting_list, waiting_list.last, (ListItem*) running);
+		printf("Process #%d has been moved to the waiting queue\n\n", running->pid);
+
+		/*next process*/
+		PCB* next_one = (PCB*)List_detach(&ready_list, (ListItem*)ready_list.first);
+		running = next_one;
+		printf("Process #%d is now running \n\n", next_one->pid);
+	}
+	
+
+	running->syscall_retvalue=0;
+	return;
 }
