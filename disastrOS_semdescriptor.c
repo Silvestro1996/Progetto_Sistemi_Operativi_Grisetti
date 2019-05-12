@@ -86,7 +86,7 @@ void SemDescriptorList_print(ListHead* l){
       printf(", ");
     aux=aux->next;
   }
-  printf("]");
+  printf("]\n");
 }
 
 
@@ -104,17 +104,6 @@ void SemDescriptorPtrList_print(ListHead* l){
     aux=aux->next;
   }
   printf("]");
-}
-/*implementing function defined in semdescriptor.h*/
-SemDescriptor* Search_sem_id(ListHead* descriptor_list, int sem_id){
-	ListItem* aux = descriptor_list->first;
-	SemDescriptor* semdes;
-	while(aux){
-		SemDescriptor* des= (SemDescriptor*)aux;
-		if ( sem_id == des->semaphore->id) semdes = des;
-		aux = aux->next;
-	}
-	return semdes;
 }
 
 
