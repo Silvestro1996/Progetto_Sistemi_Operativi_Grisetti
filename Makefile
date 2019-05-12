@@ -1,5 +1,5 @@
 CC=gcc
-CCOPTS=--std=gnu99 -Wall 
+CCOPTS=--std=gnu99 -g -Wall 
 AR=ar
 
 HEADERS=disastrOS.h\
@@ -53,7 +53,7 @@ BINS=disastrOS_test
 all:	$(LIBS) $(BINS)
 
 %.o:	%.c $(HEADERS)
-	$(CC) $(CCOPTS) -c -o $@  $<
+	$(CC) $(CCOPTS) -c -o  $@  $<
 
 libdisastrOS.a: $(OBJS) $(HEADERS) 
 	$(AR) -rcs $@ $^
