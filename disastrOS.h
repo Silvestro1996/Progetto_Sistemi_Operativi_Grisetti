@@ -40,7 +40,7 @@ int disastrOS_destroyResource(int resource_id);
 void disastrOS_printStatus();
 
 //sem functions
-int Disastr0S_semOpen(int sem, int val);
-int Disastr0S_semWait(int fd);
-int Disastr0S_semPost(int fd);
-int Disastr0S_semClose(int fd);
+int disastrOS_semOpen(int sem, int val);
+int disastrOS_semWait(int fd);
+int disastrOS_semPost(int fd);
+int disastrOS_semClose(int fd);
